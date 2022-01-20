@@ -1,13 +1,15 @@
 package com.javaex.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.javaex.vo.PersonVo;
@@ -15,27 +17,19 @@ import com.javaex.vo.PersonVo;
 @Repository
 public class PhoneDao {
 
-	// 0. import java.sql.*;
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
+	@Autowired
+	private DataSource dataSource;
 
-	private String driver = "oracle.jdbc.driver.OracleDriver";
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String id = "phonedb";
-	private String pw = "phonedb";
+	// 0. import java.sql.*;
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
 
 	private void getConnection() {
-		try {
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName(driver);
-
-			// 2. Connection 얻어오기
-			conn = DriverManager.getConnection(url, id, pw);
+		try { // 2. Connection 얻어오기
+			conn = dataSource.getConnection();
 			// System.out.println("접속성공");
 
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
@@ -149,7 +143,7 @@ public class PhoneDao {
 	// 사람 1명정보만 가져올때
 	public PersonVo getPerson(int personId) {
 		PersonVo personVo = null;
-		
+
 		getConnection();
 
 		try {
@@ -166,19 +160,17 @@ public class PhoneDao {
 			pstmt = conn.prepareStatement(query); // 쿼리로 만들기
 
 			pstmt.setInt(1, personId); // ?(물음표) 중 1번째, 순서중요
-			
-			
+
 			rs = pstmt.executeQuery();
 
 			// 4.결과처리
-				rs.next();
-				int id = rs.getInt("person_id");
-				String name = rs.getString("name");
-				String hp = rs.getString("hp");
-				String company = rs.getString("company");
+			rs.next();
+			int id = rs.getInt("person_id");
+			String name = rs.getString("name");
+			String hp = rs.getString("hp");
+			String company = rs.getString("company");
 
-				personVo = new PersonVo(id, name, hp, company);
-			
+			personVo = new PersonVo(id, name, hp, company);
 
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
@@ -190,9 +182,6 @@ public class PhoneDao {
 
 	}
 
-	
-	
-	
 	// 사람 수정
 	public int personUpdate(PersonVo personVo) {
 		int count = 0;
