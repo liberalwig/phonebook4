@@ -32,6 +32,7 @@
 		</table>
 		<br>
 	</c:forEach>
-
+<br>
+<a href="/phonebook4/phone/writeForm">전화번호등록폼</a>
 </body>
 </html>
