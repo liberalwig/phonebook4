@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaex.dao.PhoneDao;
 import com.javaex.vo.PersonVo;
@@ -24,8 +25,7 @@ public class PhoneController {
 	private String list(Model model) { // model이란 그릇에 컨트롤러가 정보 넣어두면 디스패처가 모델 가져감
 		System.out.println("PhoneController > list() ");
 
-		// MVC방식으로 세 과정을 최대한 분리함
-		// 다오에서 리스트를 가져온다
+		// 다오에서 리스트를 가져온다_ MVC방식으로 세 과정을 최대한 분리함
 		List<PersonVo> personList = phoneDao.getPersonList();
 		System.out.println(personList.toString());
 
@@ -49,9 +49,38 @@ public class PhoneController {
 
 		phoneDao.personInsert(personVo);
 
-		return "redirect: /phonebook4/phone/list";
+		return "redirect: /phone/list";
 	}
-}
+
+	@RequestMapping(value = "/delete", method = { RequestMethod.GET, RequestMethod.POST })
+	public String delete(@RequestParam("personId") int personId) {
+		System.out.println("PhoneController > delete() ");
+
+// 삭제
+		phoneDao.personDelete(personId);
+
+		return "redirect: /phone/list";
+	}
+
+	@RequestMapping(value = "/updateForm", method = { RequestMethod.GET, RequestMethod.POST })
+	private String updateForm(@RequestParam("no") int no, Model model) {
+		System.out.println("PhoneController > updateForm() ");
+
+		PersonVo personVo = phoneDao.getPerson(no);
+
+		model.addAttribute("personVo", personVo);
+
+		return "updateForm";
+	}
+
+@RequestMapping(value = "/update", method = { RequestMethod.GET,
+RequestMethod.POST }) public String update(@ModelAttribute PersonVo personVo)
+{ System.out.println("PhoneController > update");
+
+phoneDao.personUpdate(personVo);
+
+return "redirect: /phone/list"; 
+}}
 /*
  * @RequestMapping(value = "/view", method = { RequestMethod.GET,
  * RequestMethod.POST }) public String view(@RequestParam(value = "no") int no)
@@ -90,26 +119,6 @@ public class PhoneController {
  */
 
 /*
- * @RequestMapping(value = "/updateForm", method = { RequestMethod.GET,
- * RequestMethod.POST }) private String updateForm(@RequestParam("no") int no,
- * Model model) { System.out.println("PhoneController > updateForm() ");
- * 
- * PersonVo personVo = phoneDao.getPerson(no);
- * 
- * model.addAttribute("personVo", personVo);
- * 
- * return "updateForm"; }
- * 
- * @RequestMapping(value = "/update", method = { RequestMethod.GET,
- * RequestMethod.POST }) public String update(@ModelAttribute PersonVo personVo)
- * { System.out.println("PhoneController > update");
- * 
- * phoneDao.personUpdate(personVo);
- * 
- * return "redirect: /phone/list"; }
- * 
- * 
- * 
  * @RequestMapping(value = "/view/{no}", method = { RequestMethod.GET,
  * RequestMethod.POST }) public String view11(@PathVariable("no") int no) {
  * System.out.println("@PathVariable로 하기"); System.out.println(no + "번글 가져오기");

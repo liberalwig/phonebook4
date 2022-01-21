@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +22,22 @@
 				<td>이름(name)</td>
 				<td>${personVo.name}</td>
 			</tr>
+
 			<tr>
 				<td>핸드폰(hp)</td>
 				<td>${personVo.hp}</td>
 			</tr>
+
 			<tr>
 				<td>회사(company)</td>
 				<td>${personVo.company}</td>
 			</tr>
-		</table>
-		<br>
-	</c:forEach>
-<br>
-<a href="/phonebook4/phone/writeForm">전화번호등록폼</a>
+			<tr>
+				<td><a href="/phonebook4/phone/updateForm?personId=${personVo.personId}">[수정]</a></td>
+				<td><a href="/phonebook4/phone/delete?personId=${personVo.personId}">[삭제]</a></td>
+			</tr>
+		</table><br>
+	</c:forEach><br>
+	<a href="/phonebook4/phone/writeForm">전화번호등록폼</a>
 </body>
 </html>
