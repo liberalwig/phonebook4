@@ -49,7 +49,7 @@ public class PhoneController {
 
 		phoneDao.personInsert(personVo);
 
-		return "redirect: /phone/list";
+		return "redirect: /phonebook4/phone/list";
 	}
 
 	@RequestMapping(value = "/delete", method = { RequestMethod.GET, RequestMethod.POST })
@@ -59,28 +59,29 @@ public class PhoneController {
 // 삭제
 		phoneDao.personDelete(personId);
 
-		return "redirect: /phone/list";
+		return "redirect: /phonebook4/phone/list";
 	}
 
 	@RequestMapping(value = "/updateForm", method = { RequestMethod.GET, RequestMethod.POST })
-	private String updateForm(@RequestParam("no") int no, Model model) {
+	private String updateForm(@RequestParam("personId") int personId, Model model) {
 		System.out.println("PhoneController > updateForm() ");
 
-		PersonVo personVo = phoneDao.getPerson(no);
+		PersonVo personVo = phoneDao.getPerson(personId);
 
 		model.addAttribute("personVo", personVo);
 
 		return "updateForm";
 	}
 
-@RequestMapping(value = "/update", method = { RequestMethod.GET,
-RequestMethod.POST }) public String update(@ModelAttribute PersonVo personVo)
-{ System.out.println("PhoneController > update");
+	@RequestMapping(value = "/update", method = { RequestMethod.GET, RequestMethod.POST })
+	public String update(@ModelAttribute PersonVo personVo) {
+		System.out.println("PhoneController > update");
+		System.out.println(personVo);
+		phoneDao.personUpdate(personVo);
 
-phoneDao.personUpdate(personVo);
-
-return "redirect: /phone/list"; 
-}}
+		return "redirect: /phonebook4/phone/list";
+	}
+}
 /*
  * @RequestMapping(value = "/view", method = { RequestMethod.GET,
  * RequestMethod.POST }) public String view(@RequestParam(value = "no") int no)

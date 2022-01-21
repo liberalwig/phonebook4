@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +21,36 @@ public class PhoneDao {
 		System.out.println("PhoneDao.getPersonList()");
 
 		List<PersonVo> personList = sqlSession.selectList("phonebook.selectList");
-		
+
 		return personList;
 	}
 
 	// 전화번호 추가
-	public int personInsert(PersonVo personVo) {
-		System.out.println("PhoneDao.personInsert()");
+	public int personInsert2(String name, String hp, String company) {
+		System.out.println("PhoneDao.personInsert() 파라미터 여러가지로 받을 때 ");
 
-		int count = sqlSession.insert("phonebook.insert", personVo);
+		Map<String, Object> personMap = new HashMap<String, Object>();
+		
+
+		personMap.put("name", name);
+		personMap.put("hp", hp);
+		personMap.put("company", company);
+		int count = sqlSession.insert("phonebook.insert2" , personMap);
 		System.out.println(count + "건 저장");
-
-		return count;
+		return 0;
 	}
+
+	
+	 // 전화번호 추가 
+	 public int personInsert(PersonVo personVo) {
+	  System.out.println("PhoneDao.personInsert()");
+	  
+	  int count = sqlSession.insert("phonebook.insert", personVo);
+	  System.out.println(count + "건 저장");
+	  
+	  return count; 
+	 }
+	 
 
 	// 전화번호 삭제
 	public int personDelete(int personId) {
@@ -41,22 +60,39 @@ public class PhoneDao {
 	}
 
 	// 전화번호 수정하기 위해 하나 가져오기
+	/*
 	public PersonVo getPerson(int personId) {
 		System.out.println("PersonDao.getPerson()");
-		
+
 		PersonVo personVo = sqlSession.selectOne("phonebook.selectOne", personId);
 		System.out.println("personVo");
-		
+
 		return personVo;
 	}
+	
+	*/
 
+	// Map전화번호 수정하기 위해 하나 가져오기
+	public PersonVo getPerson(int personId) {
+		System.out.println("PersonDao.getPerson2()");
+
+		Map<String, String>personMap = sqlSession.selectOne("phonebook.selectPerson2", personId);
+		personMap.get("PERSON_ID");
+		personMap.get("NAME");
+		personMap.get("HP");
+		personMap.get("COMPANY");
+		System.out.println("personVo");
+	
+		return null;
+	}
+	
 	// 수정한 전화번호 업데이트
 	public int personUpdate(PersonVo personVo) {
 		System.out.println("PersonDao.personUpdate");
-	
-		return  sqlSession.update("phonebook.update", personVo);
+
+		return sqlSession.update("phonebook.update", personVo);
 	}
-	
+
 }
 /*
  * // 사람 추가 public int personInsert(PersonVo personVo) { int count = 0;
@@ -158,8 +194,7 @@ public class PhoneDao {
  * 
  * try {
  * 
- * // 3. SQL문 준비 / 바인딩 / 실행 String query = ""; // 쿼리문 문자열만들기, ? 주의 
- * query +=
+ * // 3. SQL문 준비 / 바인딩 / 실행 String query = ""; // 쿼리문 문자열만들기, ? 주의 query +=
  * " update person "; query += " set name = ? , "; query += "     hp = ? , ";
  * query += "     company = ? "; query += " where person_id = ? ";
  * 
