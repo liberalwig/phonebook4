@@ -30,27 +30,24 @@ public class PhoneDao {
 		System.out.println("PhoneDao.personInsert() 파라미터 여러가지로 받을 때 ");
 
 		Map<String, Object> personMap = new HashMap<String, Object>();
-		
 
 		personMap.put("name", name);
 		personMap.put("hp", hp);
 		personMap.put("company", company);
-		int count = sqlSession.insert("phonebook.insert2" , personMap);
+		int count = sqlSession.insert("phonebook.insert2", personMap);
 		System.out.println(count + "건 저장");
 		return 0;
 	}
 
-	
-	 // 전화번호 추가 
-	 public int personInsert(PersonVo personVo) {
-	  System.out.println("PhoneDao.personInsert()");
-	  
-	  int count = sqlSession.insert("phonebook.insert", personVo);
-	  System.out.println(count + "건 저장");
-	  
-	  return count; 
-	 }
-	 
+	// 전화번호 추가
+	public int personInsert(PersonVo personVo) {
+		System.out.println("PhoneDao.personInsert()");
+
+		int count = sqlSession.insert("phonebook.insert", personVo);
+		System.out.println(count + "건 저장");
+
+		return count;
+	}
 
 	// 전화번호 삭제
 	public int personDelete(int personId) {
@@ -60,7 +57,7 @@ public class PhoneDao {
 	}
 
 	// 전화번호 수정하기 위해 하나 가져오기
-	/*
+
 	public PersonVo getPerson(int personId) {
 		System.out.println("PersonDao.getPerson()");
 
@@ -69,23 +66,21 @@ public class PhoneDao {
 
 		return personVo;
 	}
-	
-	*/
 
 	// Map전화번호 수정하기 위해 하나 가져오기
-	public PersonVo getPerson(int personId) {
-		System.out.println("PersonDao.getPerson2()");
+//	public PersonVo getPerson(int personId) {
+//		System.out.println("PersonDao.getPerson2()");
+//
+//		Map<String, String>personMap = sqlSession.selectOne("phonebook.selectPerson2", personId);
+//		personMap.get("PERSON_ID");
+//		personMap.get("NAME");
+//		personMap.get("HP");
+//		personMap.get("COMPANY");
+//		System.out.println("personVo");
+//	
+//		return ;
+//	}
 
-		Map<String, String>personMap = sqlSession.selectOne("phonebook.selectPerson2", personId);
-		personMap.get("PERSON_ID");
-		personMap.get("NAME");
-		personMap.get("HP");
-		personMap.get("COMPANY");
-		System.out.println("personVo");
-	
-		return null;
-	}
-	
 	// 수정한 전화번호 업데이트
 	public int personUpdate(PersonVo personVo) {
 		System.out.println("PersonDao.personUpdate");

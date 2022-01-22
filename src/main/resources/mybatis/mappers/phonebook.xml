@@ -44,7 +44,7 @@
 
 	<!-- 수정폼: 전화번호 1개 불러오기 -->
 
-	<select id="selectPerson1" parameterType="int" resultType="PersonVo">
+	<select id="selectOne" parameterType="int" resultType="PersonVo">
 		<![CDATA[
 			select person_id personId,
 						name,

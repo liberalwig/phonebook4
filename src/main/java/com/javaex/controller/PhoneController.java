@@ -49,7 +49,7 @@ public class PhoneController {
 
 		phoneDao.personInsert(personVo);
 
-		return "redirect: /phonebook4/phone/list";
+		return "redirect:/phone/list";
 	}
 
 	@RequestMapping(value = "/delete", method = { RequestMethod.GET, RequestMethod.POST })
@@ -59,7 +59,7 @@ public class PhoneController {
 // 삭제
 		phoneDao.personDelete(personId);
 
-		return "redirect: /phonebook4/phone/list";
+		return "redirect:/phone/list";
 	}
 
 	@RequestMapping(value = "/updateForm", method = { RequestMethod.GET, RequestMethod.POST })
@@ -79,7 +79,7 @@ public class PhoneController {
 		System.out.println(personVo);
 		phoneDao.personUpdate(personVo);
 
-		return "redirect: /phonebook4/phone/list";
+		return "redirect:/phone/list";
 	}
 }
 /*
